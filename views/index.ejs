@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 
-<body>
+<body class="bg-dark text-white">
 
     <div class="container-fluid mt-3">
         <h1 class="text-center mb-3">
@@ -21,10 +21,10 @@
                 <div class="row">
                     <% for (let player of players) {%>
                         <div class="col-md-6 mb-3">
-                            <div class="card">
+                            <div class="card bg-dark border-light">
                                 <div class="card-body">
-                                    <h5 class="card-title">
-                                        <%= player.pName%>
+                                    <h5 class="card-title text-white">
+                                        <%= player.name%>
                                             <%= player.surname%>
                                     </h5>
                                     <h6 class="card-subtitle mb2 text-muted">
@@ -37,10 +37,21 @@
                                         Team: <%= player.team%>
                                     </p>
                                     <p class="card-text">
-                                        Salary: <%= player.salary%>
+
+                                        <% if (player.salary> 1000000) {%>
+                                            Salary:
+                                            <%= (player.salary / 1000000).toFixed(2) %> mlns
+                                                <% } else if (player.salary> 1000) {%>
+                                                    Salary:
+                                                    <%= (player.salary / 1000).toFixed(2) %> ks
+                                                        <% } else {%>
+                                                            Salary:
+                                                            <%= player.salary %>
+                                                                <% } %>
+
                                     </p>
-                                    <a href="/editPlayer/<%= player.pId %>" class="btn btn-warning btn-sm">EDIT</a>
-                                    <a href="/deletePlayer/<%= player.pId %>" class="btn btn-danger btn-sm">DELETE</a>
+                                    <a href="/editPlayer/<%= player.id %>" class="btn btn-warning btn-sm">EDIT</a>
+                                    <a href="/deletePlayer/<%= player.id %>" class="btn btn-danger btn-sm">DELETE</a>
                                 </div>
                             </div>
                         </div>
@@ -51,45 +62,45 @@
                 <h3>Add New Player</h3>
                 <form action="/addPlayer" method="post">
                     <div class="form-group">
-                        <label for="pName">Name</label>
-                        <input type="text" class="form-control" id="pName" name="pName" placeholder="Enter name"
-                            required>
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control bg-dark text-white border-light" id="name" name="name"
+                            placeholder="Enter name" required>
                     </div>
                     <div class="form-group">
                         <label for="surname">Surname</label>
-                        <input type="text" class="form-control" id="surname" name="surname" placeholder="Enter surname"
-                            required>
+                        <input type="text" class="form-control bg-dark text-white border-light" id="surname"
+                            name="surname" placeholder="Enter surname" required>
                     </div>
                     <div class="form-group">
                         <label for="position">Position</label>
-                        <input type="text" class="form-control" id="position" name="position"
-                            placeholder="Enter position" required>
+                        <input type="text" class="form-control bg-dark text-white border-light" id="position"
+                            name="position" placeholder="Enter position" required>
                     </div>
                     <div class="form-group">
                         <label for="nationality">Nationality</label>
-                        <input type="text" class="form-control" id="nationality" name="nationality"
-                            placeholder="Enter nationality" required>
+                        <input type="text" class="form-control bg-dark text-white border-light" id="nationality"
+                            name="nationality" placeholder="Enter nationality" required>
                     </div>
                     <div class="form-group">
-                        <!-- make a list of teams to select: -->
                         <label for="team">Team</label>
-                        <select class="form-control" id="team" name="team">
+                        <select class="form-control bg-dark text-white border-light" id="team" name="team_id">
+
                             <% for (let team of teams) {%>
-                                <option>
+                                <option value="<%= team.id %>">
                                     <%= team.name %>
                                 </option>
                                 <% } %>
+
                         </select>
 
                     </div>
                     <div class="form-group">
                         <label for="salary">Salary</label>
-                        <input type="number" class="form-control" id="salary" name="salary" placeholder="Enter salary">
+                        <input type="number" class="form-control bg-dark text-white border-light" id="salary"
+                            name="salary" placeholder="Enter salary" value=0>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Add Player</button>
-
-
+                    <button class="btn btn-primary">Add Player</button>
 
                 </form>
             </div>

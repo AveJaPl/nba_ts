@@ -1,10 +1,9 @@
 export interface IPlayer {
     id: number;
     name: string;
-    age: number;
-    country: string;
-    team: string;
+    surname: string;
+    team_id: number;
+    nationality: string;
     position: string;
-    number: number;
     salary: number;
-    }
+}

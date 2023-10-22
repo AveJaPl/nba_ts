@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edycja Zawodnika</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body class="bg-dark text-white d-flex align-items-center justify-content-center" style="height: 100vh;">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h1 class="text-center mb-3">
+                    <%= message%>
+                </h1>
+                <h3 class="text-center">Edit Player</h3>
+                <form action="/editPlayer/<%= player.id%>" method="post">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control bg-dark text-white border-light" id="name" name="name"
+                            placeholder="Enter name" value="<%= player.name %>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="surname">Surname</label>
+                        <input type="text" class="form-control bg-dark text-white border-light" id="surname"
+                            name="surname" placeholder="Enter surname" value="<%= player.surname %>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="position">Position</label>
+                        <input type="text" class="form-control bg-dark text-white border-light" id="position"
+                            name="position" placeholder="Enter position" value="<%= player.position %>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nationality">Nationality</label>
+                        <input type="text" class="form-control bg-dark text-white border-light" id="nationality"
+                            name="nationality" placeholder="Enter nationality" value="<%= player.nationality%>"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="team">Team</label>
+                        <select class="form-control bg-dark text-white border-light" id="team" name="team_id">
+                            <% for (let team of teams) {%>
+                                <option value="<%= team.id %>" <%=team.id===player.team_id ? 'selected' : '' %>>
+                                    <%= team.name %>
+                                </option>
+                                <% } %>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="salary">Salary</label>
+                        <input type="number" class="form-control bg-dark text-white border-light" id="salary"
+                            name="salary" placeholder="Enter salary" value="<%= player.salary%>">
+                    </div>
+                    <button class="btn btn-primary mx-auto d-block">Update Player</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
