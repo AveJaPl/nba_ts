@@ -38,12 +38,12 @@
                                     </p>
                                     <p class="card-text">
 
-                                        <% if (player.salary> 1000000) {%>
+                                        <% if (player.salary>= 1000000) {%>
                                             Salary:
-                                            <%= (player.salary / 1000000).toFixed(2) %> mlns
-                                                <% } else if (player.salary> 1000) {%>
+                                            <%= (player.salary / 1000000).toFixed(2) %> mln
+                                                <% } else if (player.salary>= 1000) {%>
                                                     Salary:
-                                                    <%= (player.salary / 1000).toFixed(2) %> ks
+                                                    <%= (player.salary / 1000).toFixed(2) %> k
                                                         <% } else {%>
                                                             Salary:
                                                             <%= player.salary %>
