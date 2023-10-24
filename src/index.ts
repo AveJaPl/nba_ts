@@ -8,11 +8,13 @@ import bodyParser from 'body-parser';
 import { getPlayer } from './getPlayer';
 import { IPlayer } from '../interfaces/IPlayer';
 import { modifyPlayer } from './modifyPlayer';
-
+import {upload} from '../multer_config';
+import formidable from 'formidable';
 
 const app = express();
 const port = 3000;
 const path = require('path');
+app.use('/images', express.static(path.join(__dirname, '..', 'images')));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('views', path.join(__dirname,'..', 'views'));
@@ -23,7 +25,7 @@ app.get('/', async (req: Request, res: Response) => {
     try {
         const players = await getPlayers();
         const teams = await getTeams();
-
+        console.log(players);
         res.render('index', { title: 'Strona Główna', message: 'Hello there!', players: players, teams: teams });
     } catch (e) {
         console.log(e);
@@ -31,17 +33,24 @@ app.get('/', async (req: Request, res: Response) => {
     }
 });
 
-app.post('/addPlayer', async (req: Request, res: Response) => {
+app.post('/addPlayer', upload.single('playerImage'), async (req: Request, res: Response) => {
     try {
-        await addPlayer(req.body);
+        let player: IPlayer = req.body;
+
+        if (!player.salary) {
+            player.salary = 0;
+        }
+        if (req.file) {
+            player.imagePath = req.file.path;
+        }
+        await addPlayer(player);
     } catch (e) {
         console.log(e);
         res.status(500).send('Something broke!');
     } finally {
         res.redirect('/');
     }
-}
-);
+});
 
 app.get('/deletePlayer/:id', async (req: Request, res: Response) => {
         const id = parseInt(req.params.id);

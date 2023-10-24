@@ -6,4 +6,5 @@ export interface IPlayer {
     nationality: string;
     position: string;
     salary: number;
+    imagePath: string;
 }
