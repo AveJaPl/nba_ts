@@ -9,6 +9,7 @@ import { getPlayer } from './getPlayer';
 import { IPlayer } from '../interfaces/IPlayer';
 import { modifyPlayer } from './modifyPlayer';
 import {upload} from '../multer_config';
+import formidable from 'formidable';
 
 const app = express();
 const port = 3000;
@@ -38,6 +39,9 @@ app.post('/addPlayer', upload.single('playerImage'), async (req: Request, res: R
 
         if (!player.salary) {
             player.salary = 0;
+        }
+        if (req.file) {
+            player.imagePath = req.file.path;
         }
         await addPlayer(player);
     } catch (e) {
