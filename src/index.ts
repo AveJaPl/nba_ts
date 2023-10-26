@@ -14,7 +14,7 @@ import formidable from 'formidable';
 const app = express();
 const port = 3000;
 const path = require('path');
-app.use('/images', express.static(path.join(__dirname, '..', 'images')));
+app.use('/public', express.static(path.join(__dirname, '..', 'public')));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('views', path.join(__dirname,'..', 'views'));
