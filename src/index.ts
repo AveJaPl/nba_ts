@@ -9,7 +9,6 @@ import { getPlayer } from './getPlayer';
 import { IPlayer } from '../interfaces/IPlayer';
 import { modifyPlayer } from './modifyPlayer';
 import {upload} from '../multer_config';
-import formidable from 'formidable';
 
 const app = express();
 const port = 3000;
@@ -26,7 +25,7 @@ app.get('/', async (req: Request, res: Response) => {
         const players = await getPlayers();
         const teams = await getTeams();
         console.log(players);
-        res.render('index', { title: 'Strona Główna', message: 'Hello there!', players: players, teams: teams });
+        res.render('index', { title: 'Strona Główna', message: '', players: players, teams: teams });
     } catch (e) {
         console.log(e);
         res.status(500).send('Something broke!');

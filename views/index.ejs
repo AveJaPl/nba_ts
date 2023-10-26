@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.min.js"></script>
 
+
 </head>
 
 <body class="bg-dark text-white">
@@ -162,6 +163,8 @@
                     cropBoxMovable: true,
                     cropBoxResizable: false,
                     toggleDragModeOnDblclick: false,
+                    zoomable: true,
+
                 });
 
             }, false);
@@ -170,14 +173,6 @@
                 reader.readAsDataURL(file);
             }
         }
-
-        function sendCroppedImage() {
-            const croppedCanvas = cropper.getCroppedCanvas();
-            const croppedImageUrl = croppedCanvas.toDataURL('image/png');
-
-        }
-
-
 
     </script>
 </body>
