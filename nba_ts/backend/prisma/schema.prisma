@@ -15,7 +15,7 @@ model players {
   nationality String? @db.VarChar(255)
   position    String? @db.VarChar(255)
   salary      Decimal @db.Decimal(10, 2)
-  imagePath   String? @db.VarChar(255)
+  imagePath   String? @db.VarChar(255) @unique
   team       teams?  @relation(fields: [team_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "players_ibfk_1")
 
   @@index([team_id], map: "team_id")
@@ -23,6 +23,26 @@ model players {
 
 model teams {
   id      Int       @id @default(autoincrement())
-  name    String    @db.VarChar(255)
+  name    String    @db.VarChar(50) @unique
+  city    String    @db.VarChar(20)
+  conference_id Int @db.Int
+  division_id   Int @db.Int
+ 
+  conference conferences @relation(fields: [conference_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "teams_ibfk_1")
+  division   divisions   @relation(fields: [division_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "teams_ibfk_2")
   players players[]
+}
+
+model conferences {
+  id    Int   @id @default(autoincrement())
+  name  String  @db.VarChar(7) @unique
+
+  teams teams[]
+}
+
+model divisions {
+  id    Int   @id @default(autoincrement())
+  name  String  @db.VarChar(9) @unique
+
+  teams teams[]
 }
