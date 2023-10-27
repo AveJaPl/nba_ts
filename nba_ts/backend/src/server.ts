@@ -8,11 +8,11 @@ import getAllPlayersRouter from './routes/getAllPlayers';
 import getAllTeamsRouter from './routes/getAllTeams';
 import GetPlayerRouter from './routes/getPlayerRoute';
 const app = express();
-
 app.use(cors())
 const port = 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
+
 app.set('json spaces', 2);
 
 app.use('/getAllPlayers', getAllPlayersRouter)
