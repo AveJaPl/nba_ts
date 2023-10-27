@@ -1,22 +1,60 @@
+import { useEffect, useState } from 'react';
+import Player from '../interfaces/Player';
+import axios from 'axios';
+
 
 const Home = () => {
-    return (
-        <div className="bg-dark text-white d-flex align-items-center justify-content-center" style={{ height: '100vh' }}>
-            <div className="container">
-                <div className="row">
-                    <div className="col-sm-12">
-                        <h1 className="text-center">NBA Players CRUD App</h1>
-                        <h3 className="text-center">by <a href="" target="_blank" rel="noopener noreferrer">Filip Piatek</a></h3>
-                        <div className="d-flex justify-content-center mt-5">
-                        <a href="/editPlayer/3" className="btn btn-success btn-lg">Modify Player</a><br /><br />
+    const [players, setPlayers] = useState<Player[]>([]);
 
-                            <a href="/showAllPlayers" className="btn btn-success btn-lg">Show all players</a>
+
+    useEffect(() => {
+        Promise.all([
+            axios.post("http://localhost:3000/getAllPlayers"),
+        ]).then(([playersResponse]) => {
+            setPlayers(playersResponse.data);
+        }).catch((err) => {
+            console.log(err);
+        }
+        );
+    }, []);
+
+    return (
+        <div className=" bg-dark-primary h-screen p-6">
+            <div className=" bg-nba-gray container p-3 h-full">
+                <h1 className="text-center mb-3 text-3xl font-bold">SIEMAA</h1>
+                <div className="">
+                    {players.map((player) => (
+                        <div key={player.id} className="bg-dark border-light border rounded shadow-lg p-4">
+                            <div className="flex items-start">
+                                <div className="flex-1">
+                                    <h5 className="text-xl mb-2">
+                                        {player.name} {player.surname}
+                                    </h5>
+                                    <h6 className="text-gray-300 mb-2">{player.position}</h6>
+                                    <p>Nationality: {player.nationality}</p>
+                                    <p>Team: {player.team?.name}</p>
+                                    <p>
+                                        Salary: 
+                                        {player.salary >= 1000000 ? `${(player.salary / 1000000).toFixed(2)} mln` : 
+                                         player.salary >= 1000 ? `${(player.salary / 1000).toFixed(2)} k` : player.salary}
+                                    </p>
+                                    <a href={`/editPlayer/${player.id}`} className="bg-yellow-500 hover:bg-yellow-600 text-black px-3 py-1 rounded mr-2">EDIT</a>
+                                    <a href={`/deletePlayer/${player.id}`} className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">DELETE</a>
+                                </div>
+                                <div>
+                                    {player.imagePath ? 
+                                        <img src={player.imagePath} alt="Player" className="w-32 h-32 object-cover rounded" />
+                                        :
+                                        <img src="../public/placeholder/placeholder.png" alt="Placeholder" className="w-32 h-32 object-cover rounded" />
+                                    }
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    ))}
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
-export default Home
+export default Home;
