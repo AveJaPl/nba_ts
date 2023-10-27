@@ -1,6 +1,9 @@
+import react from '@vitejs/plugin-react-swc';
+
 /** @type {import('tailwindcss').Config} */
 export default {
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
+  darkMode: 'class', // or 'media' or 'class'
   theme: {
     extend: {
       colors: {
@@ -10,7 +13,16 @@ export default {
         'nba-white': '#FFFFFF',
 
     },
+    backgroundColor: {
+      'primary': '#ffffff',
+      'secondary': '#f5f5f5',
+      'dark-primary': '#1a1a1a',
+      'dark-secondary': '#2a2a2a',
+    }
   },
-  plugins: [],
+  variants: {
+    extend: {},
+  },
+  plugins: [react()],
 }
 }
