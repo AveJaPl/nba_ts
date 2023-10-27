@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Player from '../interfaces/Player';
 import axios from 'axios';
-
+import '../styles/playerCard.css'
 
 const Home = () => {
     const [players, setPlayers] = useState<Player[]>([]);
@@ -19,14 +19,14 @@ const Home = () => {
     }, []);
 
     return (
-        <div className=" bg-dark-primary h-screen p-6">
+        <div className=" bg-dark-primary h-full p-6">
             <div className=" bg-nba-gray container p-3 h-full">
                 <h1 className="text-center mb-3 text-3xl font-bold">SIEMAA</h1>
-                <div className="">
+                <div className="card-container">
                     {players.map((player) => (
-                        <div key={player.id} className="bg-dark border-light border rounded shadow-lg p-4">
-                            <div className="flex items-start">
-                                <div className="flex-1">
+                        <div key={player.id} className="card border-nba-red border rounded shadow-lg p-4">
+                            <div className="">
+                                <div className="">
                                     <h5 className="text-xl mb-2">
                                         {player.name} {player.surname}
                                     </h5>
