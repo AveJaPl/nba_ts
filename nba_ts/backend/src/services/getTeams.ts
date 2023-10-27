@@ -18,6 +18,6 @@ export const getTeams = async () => {
         }
     });
 
-    console.log('Dataa recieved from db: ');
+    console.log('Teams recieved from db! ');
     return teams;
 };

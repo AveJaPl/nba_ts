@@ -11,7 +11,7 @@ export const deletePlayer = async (id: number) => {
                 id: id
             }
         });
-        console.log('Player deleted from db: ');
+        console.log('Player deleted from db: ', deletePlayer?.name);
         return deletedPlayer;
     
    } catch (error) {
