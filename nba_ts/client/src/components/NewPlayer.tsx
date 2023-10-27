@@ -1,114 +1,150 @@
-import React, {useState, ChangeEvent} from "react"
-import AddPlayerProps from "../interfaces/AddPlayerProps"
+import { useState, ChangeEvent, useEffect } from "react";
+import Team from "../interfaces/Team";
+import axios from "axios";
+const NewPlayer = () => {
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [teams, setTeams] = useState<Team[]>([]);
 
-const NewPlayer: React.FC<AddPlayerProps> = ({ teams }) => {
-    const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const inputClass =
+    "hover:bg-nba-blue hover:text-white mt-1 w-full p-3 border rounded-md text-lg ";
+  const labelClass = "block text-nba-gray text-lg font-medium mb-2o";
 
-    const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files && e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImagePreview(reader.result as string);
-            }
-            reader.readAsDataURL(file);
-        }
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files && e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
     }
+  };
 
-    return (
-        <div className="col-sm-4">
-            <h3>Add New Player</h3>
-            <form action="/addPlayer" method="post" encType="multipart/form-data">
-                <div className="form-group">
-                    <label htmlFor="name">Name</label>
-                    <input
-                        type="text"
-                        className="form-control bg-dark text-white border-light"
-                        id="name"
-                        name="name"
-                        placeholder="Enter name"
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="surname">Surname</label>
-                    <input
-                        type="text"
-                        className="form-control bg-dark text-white border-light"
-                        id="surname"
-                        name="surname"
-                        placeholder="Enter surname"
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="position">Position</label>
-                    <select
-                        className="form-control bg-dark text-white border-light"
-                        id="position"
-                        name="position"
-                        required
-                    >
-                        <option value="PG">PG</option>
-                        <option value="SG">SG</option>
-                        <option value="SF">SF</option>
-                        <option value="PF">PF</option>
-                        <option value="C">C</option>
-                    </select>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="nationality">Nationality</label>
-                    <input
-                        type="text"
-                        className="form-control bg-dark text-white border-light"
-                        id="nationality"
-                        name="nationality"
-                        placeholder="Enter nationality"
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="team">Team</label>
-                    <select className="form-control bg-dark text-white border-light" id="team" name="team_id">
-                        {teams.map(team => (
-                            <option value={team.id} key={team.id}>{team.name}</option>
-                        ))}
-                    </select>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="salary">Salary</label>
-                    <input
-                        type="number"
-                        className="form-control bg-dark text-white border-light"
-                        id="salary"
-                        name="salary"
-                        placeholder="Enter salary"
-                        defaultValue={0}
-                    />
-                </div>
-                <div className="custom-file mb-3">
-                    <input
-                        type="file"
-                        className="custom-file-input"
-                        id="playerImageInput"
-                        name="playerImage"
-                        accept="image/*"
-                        onChange={handleImageChange}
-                    />
-                    <label className="custom-file-label" htmlFor="playerImageInput">Wybierz zdjęcie...</label>
-                </div>
-                <div className="d-inline-block" style={{ width: '100%' }}>
-                    <img
-                        id="previewImage"
-                        src={imagePreview || '#'}
-                        alt="Podgląd wybranego zdjęcia"
-                        style={{ width: '100%' }}
-                    />
-                </div>
-                <button className="btn btn-primary w-100">Add Player</button>
-            </form>
+  useEffect(() => {
+    Promise.all([axios.post("http://localhost:3000/getAllTeams")])
+      .then(([teamsResponse]) => {
+        setTeams(teamsResponse.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  return (
+    <div className="bg-dark-primary h-screen w-full flex justify-center m-auto">
+      <div className="container mx-8 w-full md:w-1/2 lg:w-2/5">
+      <div className="text-center mb-8 text-3xl font-bold text-nba-gray">
+          Add New Player
         </div>
-    );
-}
+        <form action="http://localhost:3000/addPlayer" method="post" encType="multipart/form-data">
+          <div className="form-group">
+            <label className={labelClass}>
+              Name
+            </label>
+            <input
+              type="text"
+              className={inputClass}
+              id="name"
+              name="name"
+              placeholder="Enter name"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label className={labelClass}>
+              Surname
+            </label>
+            <input
+              type="text"
+              className={inputClass}
+              id="surname"
+              name="surname"
+              placeholder="Enter surname"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label className={labelClass}>
+              Position
+            </label>
+            <select
+              className={inputClass}
+              id="position"
+              name="position"
+              required
+            >
+              <option value="PG">PG</option>
+              <option value="SG">SG</option>
+              <option value="SF">SF</option>
+              <option value="PF">PF</option>
+              <option value="C">C</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <label className={labelClass}>
+              Nationality
+            </label>
+            <input
+              type="text"
+              className={inputClass}
+              id="nationality"
+              name="nationality"
+              placeholder="Enter nationality"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label className={labelClass}>
+              Team
+            </label>
+            <select className={inputClass} id="team" name="team_id">
+              {teams.map((team) => (
+                <option value={team.id} key={team.id}>
+                  {team.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="form-group">
+            <label className={labelClass}>
+              Salary
+            </label>
+            <input
+              type="number"
+              className={inputClass}
+              id="salary"
+              name="salary"
+              placeholder="Enter salary"
+              defaultValue={0}
+            />
+          </div>
+          <div className="custom-file mb-3">
+            <input
+              type="file"
+              className={inputClass}
+              id="playerImageInput"
+              name="playerImage"
+              accept="image/*"
+              onChange={handleImageChange}
+            />
+          </div>
+          <div className="d-inline-block" style={{ width: "100%" }}>
+            <img
+              id="previewImage"
+              src={imagePreview || "#"}
+              alt="Podgląd wybranego zdjęcia"
+              style={{ width: "100%" }}
+            />
+          </div>
+
+          <button className="mt-4 w-full bg-nba-red hover:text-nba-gray text-white p-3 rounded text-lg transition duration-300">
+              Update Player
+            </button>
+
+        </form>
+      </div>
+    </div>
+  );
+};
 
 export default NewPlayer;
