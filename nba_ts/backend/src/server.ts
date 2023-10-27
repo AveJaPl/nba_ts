@@ -17,9 +17,8 @@ app.set('json spaces', 2);
 
 app.use('/getAllPlayers', getAllPlayersRouter)
 app.use('/getAllTeams', getAllTeamsRouter)
-//  upload.single('playerImage'),
-app.use('/addPlayer', AddPlayerRouter );
-app.use('/deletePlayer/:id', DeletePlayerRouter);
+app.use('/addPlayer', AddPlayerRouter);
+app.use('/deletePlayer/', DeletePlayerRouter);
 app.use('/editPlayer/', ModifyPlayerRouter);
 app.use('/getPlayer/', GetPlayerRouter);
 

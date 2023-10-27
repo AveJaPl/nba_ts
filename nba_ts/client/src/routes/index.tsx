@@ -3,6 +3,7 @@ import Home from '../pages/Home';
 import EditPlayer from "../pages/EditPlayer";
 import Header from "../components/Header";
 import NewPlayer from "../components/NewPlayer";
+import DeletePlayer from "../components/DeletePlayer";
 
 
 const AppRoutes = () => {
@@ -13,6 +14,7 @@ const AppRoutes = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/editPlayer/:id" element={<EditPlayer/>} />
                 <Route path="/addPlayer" element={<NewPlayer/>} />
+                <Route path="/deletePlayer/:id" element={<DeletePlayer/>} />
             </Routes>
         </Router>
     )
