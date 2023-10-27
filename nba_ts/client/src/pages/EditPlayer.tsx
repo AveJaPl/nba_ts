@@ -5,12 +5,12 @@ import axios from "axios";
 import Player from "../interfaces/Player";
 import Team from "../interfaces/Team";
 
-
 const EditPlayer = () => {
-    const {id} = useParams<{id: string}>();
+    const { id } = useParams<{ id: string }>();
     const [player, setPlayer] = useState<Player | null>(null);
     const [teams, setTeams] = useState<Team[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const nbaPositions = ["PG", "SG", "SF", "PF", "C"];
 
     useEffect(() => {
         setLoading(true);
@@ -28,88 +28,93 @@ const EditPlayer = () => {
     }, [id]);
 
     return (
-        <div className="bg-dark text-white d-flex align-items-center justify-content-center" style={{ height: '100vh' }}>
-            hello
-            <div className="container">
-                <div className="row">
-                    <div className="col-sm-12">
-                        <h3 className="text-center">Edit Player</h3>
-                        {player && (
-                            <form action={`http://localhost:3000/editPlayer/${player.id}`} method="post">
-                                <div className="form-group">
-                                    <label htmlFor="name">Name</label>
-                                    <input
-                                        type="text"
-                                        className="form-control bg-dark text-white border-light"
-                                        id="name"
-                                        name="name"
-                                        placeholder="Enter name"
-                                        defaultValue={player.name}
-                                        required
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="surname">Surname</label>
-                                    <input
-                                        type="text"
-                                        className="form-control bg-dark text-white border-light"
-                                        id="surname"
-                                        name="surname"
-                                        placeholder="Enter surname"
-                                        defaultValue={player.surname}
-                                        required
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="position">Position</label>
-                                    <input
-                                        type="text"
-                                        className="form-control bg-dark text-white border-light"
-                                        id="position"
-                                        name="position"
-                                        placeholder="Enter position"
-                                        defaultValue={player.position}
-                                        required
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="nationality">Nationality</label>
-                                    <input
-                                        type="text"
-                                        className="form-control bg-dark text-white border-light"
-                                        id="nationality"
-                                        name="nationality"
-                                        placeholder="Enter nationality"
-                                        defaultValue={player.nationality}
-                                        required
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="team">Team</label>
-                                    <select className="form-control bg-dark text-white border-light" id="team" name="team_id">
-                                        {teams.map((team) => (
-                                            <option value={team.id} key={team.id} selected={team.id === player.team_id}>
-                                                {team.name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="salary">Salary</label>
-                                    <input
-                                        type="number"
-                                        className="form-control bg-dark text-white border-light"
-                                        id="salary"
-                                        name="salary"
-                                        placeholder="Enter salary"
-                                        defaultValue={player.salary}
-                                    />
-                                </div>
-                                <button className="btn btn-primary mx-auto d-block">Update Player</button>
-                            </form>
-                        )}
-                    </div>
+        <div className="h-screen flex items-center justify-center bg-dark text-white">
+            <div className="container mx-auto">
+                <div className="text-center mb-12 text-2xl font-bold">
+                    Edit Player
                 </div>
+                {player && (
+                    <form action={`http://localhost:3000/editPlayer/${player.id}`} method="post">
+                        <div className="mb-6">
+                            <label htmlFor="name" className="block text-lg font-medium mb-2">Name</label>
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                placeholder="Enter name"
+                                defaultValue={player.name}
+                                required
+                                className="mt-1 p-3 w-full border rounded-md text-lg"
+                            />
+                        </div>
+                        <div className="mb-6">
+                            <label htmlFor="surname" className="block text-lg font-medium mb-2">Surname</label>
+                            <input
+                                type="text"
+                                id="surname"
+                                name="surname"
+                                placeholder="Enter surname"
+                                defaultValue={player.surname}
+                                required
+                                className="mt-1 p-3 w-full border rounded-md text-lg"
+                            />
+                        </div>
+                        <div className="mb-6">
+                            <label htmlFor="position" className="block text-lg font-medium mb-2">Position</label>
+                            <select
+                                id="position"
+                                name="position"
+                                defaultValue={player.position}
+                                required
+                                className="mt-1 p-3 w-full border rounded-md text-lg"
+                            >
+                                {nbaPositions.map(position => (
+                                    <option value={position} key={position}>
+                                        {position}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="mb-6">
+                            <label htmlFor="nationality" className="block text-lg font-medium mb-2">Nationality</label>
+                            <input
+                                type="text"
+                                id="nationality"
+                                name="nationality"
+                                placeholder="Enter nationality"
+                                defaultValue={player.nationality}
+                                required
+                                className="mt-1 p-3 w-full border rounded-md text-lg"
+                            />
+                        </div>
+                        <div className="mb-6">
+                            <label htmlFor="team" className="block text-lg font-medium mb-2">Team</label>
+                            <select
+                                id="team"
+                                name="team_id"
+                                className="mt-1 p-3 w-full border rounded-md text-lg"                             defaultValue={player.team_id}
+                            >
+                                {teams.map((team) => (
+                                    <option value={team.id} key={team.id}>
+                                        {team.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="mb-8">
+                            <label htmlFor="salary" className="block text-lg font-medium mb-2">Salary</label>
+                            <input
+                                type="number"
+                                id="salary"
+                                name="salary"
+                                placeholder="Enter salary"
+                                defaultValue={player.salary}
+                                className="mt-1 p-3 w-full border rounded-md text-lg"
+                            />
+                        </div>
+                        <button className="mx-auto block bg-blue-500 text-white p-3 rounded text-lg w-1/2">Update Player</button>
+                    </form>
+                )}
             </div>
         </div>
     );
