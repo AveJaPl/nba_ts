@@ -3,7 +3,7 @@ import { getPlayers } from '../services/getPlayers';
 
 const getAllPlayersRouter = express.Router();
 
-getAllPlayersRouter.post('/', async (req, res) => {
+getAllPlayersRouter.get('/', async (req, res) => {
     try {
         const allPlayers = await getPlayers();
         res.json(allPlayers);
