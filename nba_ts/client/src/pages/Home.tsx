@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Player from '../interfaces/Player';
 import axios from 'axios';
 import '../styles/playerCard.css'
+import placeholder from '../assets/placeholder/placeholder.png'
 
 const Home = () => {
     const [players, setPlayers] = useState<Player[]>([]);
@@ -19,34 +20,41 @@ const Home = () => {
     }, []);
 
     return (
-        <div className=" bg-dark-primary h-full p-6">
-            <div className=" bg-nba-gray container p-3 h-full">
-                <h1 className="text-center mb-3 text-3xl font-bold">SIEMAA</h1>
+        <div className="bg-dark-primary h-full p-6">
+            <div className="container p-3 h-full">
+                <h1 className="text-center mb-3 text-3xl font-bold text-nba-gray">SIEMAA</h1>
                 <div className="card-container">
                     {players.map((player) => (
-                        <div key={player.id} className="card border-nba-red border rounded shadow-lg p-4">
-                            <div className="">
-                                <div className="">
-                                    <h5 className="text-xl mb-2">
-                                        {player.name} {player.surname}
-                                    </h5>
-                                    <h6 className="text-gray-300 mb-2">{player.position}</h6>
-                                    <p>Nationality: {player.nationality}</p>
-                                    <p>Team: {player.team?.name}</p>
-                                    <p>
-                                        Salary: 
-                                        {player.salary >= 1000000 ? `${(player.salary / 1000000).toFixed(2)} mln` : 
-                                         player.salary >= 1000 ? `${(player.salary / 1000).toFixed(2)} k` : player.salary}
-                                    </p>
-                                    <a href={`/editPlayer/${player.id}`} className="bg-yellow-500 hover:bg-yellow-600 text-black px-3 py-1 rounded mr-2">EDIT</a>
-                                    <a href={`/deletePlayer/${player.id}`} className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">DELETE</a>
+                        <div key={player.id} className="card text-nba-gray bg-dark-secondary border-nba-blue border-s-8 rounded shadow-lg p-4">
+                            <div className="flex flex-col justify-between h-full">
+                                <div className='flex'>
+                                    <div className="flex-1">
+                                        <h5 className="text-xl mb-2">
+                                            {player.name} {player.surname}
+                                        </h5>
+                                        <h6 className="text-gray-300 mb-2">{player.position}</h6>
+                                        <p>Nationality: {player.nationality}</p>
+                                        <p>Team: {player.team?.name}</p>
+                                        <p>
+                                            Salary: 
+                                            {player.salary >= 1000000 ? `${(player.salary / 1000000).toFixed(2)} mln` : 
+                                            player.salary >= 1000 ? `${(player.salary / 1000).toFixed(2)} k` : player.salary}
+                                        </p>
+                                        
+                                    </div>
+                                    <div className=''>
+                                        {player.imagePath ? 
+                                            <img src={player.imagePath} alt="Player" className="w-32 h-32 object-cover rounded" />
+                                            :
+                                            <img src={placeholder} alt="Placeholder" className=" w-28 h-40 rounded" />
+                                        }
+                                    </div>
                                 </div>
-                                <div>
-                                    {player.imagePath ? 
-                                        <img src={player.imagePath} alt="Player" className="w-32 h-32 object-cover rounded" />
-                                        :
-                                        <img src="../public/placeholder/placeholder.png" alt="Placeholder" className="w-32 h-32 object-cover rounded" />
-                                    }
+
+                                <div className='flex mt-3 justify-end'>
+                                
+                                <a href={`/editPlayer/${player.id}`} className=" bg-nba-blue text-white hover:text-nba-gray px-3 py-1.5 rounded mr-2">EDIT</a>
+                                    <a href={`/deletePlayer/${player.id}`} className=" bg-nba-red hover:text-nba-gray text-white py-1.5 px-3 rounded">DELETE</a>
                                 </div>
                             </div>
                         </div>
