@@ -26,7 +26,11 @@ const EditPlayer = () => {
 
     return (
         <div className=" bg-dark-primary h-screen w-full flex items-center justify-center m-auto">
-            <div className="container mx-auto w-full md:w-1/2 lg:w-1/3">
+            
+            <div className="container mx-8 w-full md:w-1/2 lg:w-2/5">
+            <div className="">
+                <a href="/" className="text-nba-gray hover:text-nba-red text-3xl font-bold">X</a>
+            </div>
                 <div className="text-center mb-8 text-3xl font-bold text-nba-gray">
                     Edit Player
                 </div>
