@@ -9,34 +9,30 @@ const EditPlayer = () => {
     const { id } = useParams<{ id: string }>();
     const [player, setPlayer] = useState<Player | null>(null);
     const [teams, setTeams] = useState<Team[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
     const nbaPositions = ["PG", "SG", "SF", "PF", "C"];
-
+    const inputClasses = "hover:bg-nba-blue hover:text-white mt-1 w-full p-3 border rounded-md text-lg ";
     useEffect(() => {
-        setLoading(true);
-
         Promise.all([
             axios.post(`http://localhost:3000/getPlayer/${id}`),
             axios.post("http://localhost:3000/getAllTeams")
         ]).then(([playerResponse, teamsResponse]) => {
             setPlayer(playerResponse.data);
             setTeams(teamsResponse.data);
-            setLoading(false);
         }).catch((err) => {
             console.log(err);
         });
     }, [id]);
 
     return (
-        <div className="h-screen flex items-center justify-center bg-dark text-white">
-            <div className="container mx-auto">
-                <div className="text-center mb-12 text-2xl font-bold">
+        <div className="w-3/4 h-screen flex items-center justify-center m-auto">
+            <div className="container mx-auto w-full md:w-1/2 lg:w-1/3">
+                <div className="text-center mb-8 text-3xl font-bold">
                     Edit Player
                 </div>
                 {player && (
                     <form action={`http://localhost:3000/editPlayer/${player.id}`} method="post">
-                        <div className="mb-6">
-                            <label htmlFor="name" className="block text-lg font-medium mb-2">Name</label>
+                        <div className="mb-4">
+                            <label className="block text-lg font-medium mb-2">Name</label>
                             <input
                                 type="text"
                                 id="name"
@@ -44,11 +40,12 @@ const EditPlayer = () => {
                                 placeholder="Enter name"
                                 defaultValue={player.name}
                                 required
-                                className="mt-1 p-3 w-full border rounded-md text-lg"
+                                className={inputClasses}
                             />
                         </div>
-                        <div className="mb-6">
-                            <label htmlFor="surname" className="block text-lg font-medium mb-2">Surname</label>
+
+                        <div className="mb-4">
+                            <label className="block text-lg font-medium mb-2">Surname</label>
                             <input
                                 type="text"
                                 id="surname"
@@ -56,17 +53,18 @@ const EditPlayer = () => {
                                 placeholder="Enter surname"
                                 defaultValue={player.surname}
                                 required
-                                className="mt-1 p-3 w-full border rounded-md text-lg"
+                                className={inputClasses}
                             />
                         </div>
-                        <div className="mb-6">
-                            <label htmlFor="position" className="block text-lg font-medium mb-2">Position</label>
+
+                        <div className="mb-4">
+                            <label className="block text-lg font-medium mb-2">Position</label>
                             <select
                                 id="position"
                                 name="position"
                                 defaultValue={player.position}
                                 required
-                                className="mt-1 p-3 w-full border rounded-md text-lg"
+                                className={inputClasses}
                             >
                                 {nbaPositions.map(position => (
                                     <option value={position} key={position}>
@@ -75,8 +73,9 @@ const EditPlayer = () => {
                                 ))}
                             </select>
                         </div>
-                        <div className="mb-6">
-                            <label htmlFor="nationality" className="block text-lg font-medium mb-2">Nationality</label>
+
+                        <div className="mb-4">
+                            <label className="block text-lg font-medium mb-2">Nationality</label>
                             <input
                                 type="text"
                                 id="nationality"
@@ -84,15 +83,17 @@ const EditPlayer = () => {
                                 placeholder="Enter nationality"
                                 defaultValue={player.nationality}
                                 required
-                                className="mt-1 p-3 w-full border rounded-md text-lg"
+                                className={inputClasses}
                             />
                         </div>
-                        <div className="mb-6">
-                            <label htmlFor="team" className="block text-lg font-medium mb-2">Team</label>
+
+                        <div className="mb-4">
+                            <label className="block text-lg font-medium mb-2">Team</label>
                             <select
                                 id="team"
                                 name="team_id"
-                                className="mt-1 p-3 w-full border rounded-md text-lg"                             defaultValue={player.team_id}
+                                defaultValue={player.team_id}
+                                className={inputClasses}
                             >
                                 {teams.map((team) => (
                                     <option value={team.id} key={team.id}>
@@ -101,18 +102,20 @@ const EditPlayer = () => {
                                 ))}
                             </select>
                         </div>
-                        <div className="mb-8">
-                            <label htmlFor="salary" className="block text-lg font-medium mb-2">Salary</label>
+
+                        <div className="mb-6">
+                            <label className="block text-lg font-medium mb-2">Salary</label>
                             <input
                                 type="number"
                                 id="salary"
                                 name="salary"
                                 placeholder="Enter salary"
                                 defaultValue={player.salary}
-                                className="mt-1 p-3 w-full border rounded-md text-lg"
+                                className={inputClasses}
                             />
                         </div>
-                        <button className="mx-auto block bg-blue-500 text-white p-3 rounded text-lg w-1/2">Update Player</button>
+
+                        <button className="mt-4 w-full bg-nba-blue hover:text-nba-red text-white p-3 rounded text-lg transition duration-300">Update Player</button>
                     </form>
                 )}
             </div>
