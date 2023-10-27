@@ -10,7 +10,8 @@ const EditPlayer = () => {
     const [player, setPlayer] = useState<Player | null>(null);
     const [teams, setTeams] = useState<Team[]>([]);
     const nbaPositions = ["PG", "SG", "SF", "PF", "C"];
-    const inputClasses = "hover:bg-nba-blue hover:text-white mt-1 w-full p-3 border rounded-md text-lg ";
+    const inputClass = "hover:bg-nba-blue hover:text-white mt-1 w-full p-3 border rounded-md text-lg ";
+    const labelClass = "block text-nba-gray text-lg font-medium mb-2o"
     useEffect(() => {
         Promise.all([
             axios.post(`http://localhost:3000/getPlayer/${id}`),
@@ -24,15 +25,15 @@ const EditPlayer = () => {
     }, [id]);
 
     return (
-        <div className="w-3/4 h-screen flex items-center justify-center m-auto">
+        <div className=" bg-dark-primary h-screen w-full flex items-center justify-center m-auto">
             <div className="container mx-auto w-full md:w-1/2 lg:w-1/3">
-                <div className="text-center mb-8 text-3xl font-bold">
+                <div className="text-center mb-8 text-3xl font-bold text-nba-gray">
                     Edit Player
                 </div>
                 {player && (
                     <form action={`http://localhost:3000/editPlayer/${player.id}`} method="post">
                         <div className="mb-4">
-                            <label className="block text-lg font-medium mb-2">Name</label>
+                            <label className={labelClass}>Name</label>
                             <input
                                 type="text"
                                 id="name"
@@ -40,12 +41,12 @@ const EditPlayer = () => {
                                 placeholder="Enter name"
                                 defaultValue={player.name}
                                 required
-                                className={inputClasses}
+                                className={inputClass}
                             />
                         </div>
 
                         <div className="mb-4">
-                            <label className="block text-lg font-medium mb-2">Surname</label>
+                            <label className={labelClass}>Surname</label>
                             <input
                                 type="text"
                                 id="surname"
@@ -53,18 +54,18 @@ const EditPlayer = () => {
                                 placeholder="Enter surname"
                                 defaultValue={player.surname}
                                 required
-                                className={inputClasses}
+                                className={inputClass}
                             />
                         </div>
 
                         <div className="mb-4">
-                            <label className="block text-lg font-medium mb-2">Position</label>
+                            <label className={labelClass}>Position</label>
                             <select
                                 id="position"
                                 name="position"
                                 defaultValue={player.position}
                                 required
-                                className={inputClasses}
+                                className={inputClass}
                             >
                                 {nbaPositions.map(position => (
                                     <option value={position} key={position}>
@@ -75,7 +76,7 @@ const EditPlayer = () => {
                         </div>
 
                         <div className="mb-4">
-                            <label className="block text-lg font-medium mb-2">Nationality</label>
+                            <label className={labelClass}>Nationality</label>
                             <input
                                 type="text"
                                 id="nationality"
@@ -83,17 +84,17 @@ const EditPlayer = () => {
                                 placeholder="Enter nationality"
                                 defaultValue={player.nationality}
                                 required
-                                className={inputClasses}
+                                className={inputClass}
                             />
                         </div>
 
                         <div className="mb-4">
-                            <label className="block text-lg font-medium mb-2">Team</label>
+                            <label className={labelClass}>Team</label>
                             <select
                                 id="team"
                                 name="team_id"
                                 defaultValue={player.team_id}
-                                className={inputClasses}
+                                className={inputClass}
                             >
                                 {teams.map((team) => (
                                     <option value={team.id} key={team.id}>
@@ -104,18 +105,18 @@ const EditPlayer = () => {
                         </div>
 
                         <div className="mb-6">
-                            <label className="block text-lg font-medium mb-2">Salary</label>
+                            <label className={labelClass}>Salary</label>
                             <input
                                 type="number"
                                 id="salary"
                                 name="salary"
                                 placeholder="Enter salary"
                                 defaultValue={player.salary}
-                                className={inputClasses}
+                                className={inputClass}
                             />
                         </div>
 
-                        <button className="mt-4 w-full bg-nba-blue hover:text-nba-red text-white p-3 rounded text-lg transition duration-300">Update Player</button>
+                        <button className="mt-4 w-full bg-nba-red hover:text-nba-gray text-white p-3 rounded text-lg transition duration-300">Update Player</button>
                     </form>
                 )}
             </div>
