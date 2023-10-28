@@ -47,7 +47,7 @@ const AllPlayers = () => {
                   <img
                     src={player.imagePath}
                     alt="Player"
-                    className="w-32 h-32 object-cover rounded"
+                    className="w-28 h-42 object-cover rounded"
                   />
                 ) : (
                   <img

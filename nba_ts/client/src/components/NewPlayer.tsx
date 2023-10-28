@@ -9,16 +9,16 @@ const NewPlayer: React.FC = () => {
 
   const [crop, setCrop] = useState<Crop>({
     unit: "%",
-    x: 0,   // początkowa pozycja X
-    y: 0,   // początkowa pozycja Y
+    x: 0, // początkowa pozycja X
+    y: 0, // początkowa pozycja Y
     height: 155,
     width: 115,
-    });
-  
-    
+  });
+
   const [teams, setTeams] = useState<Team[]>([]);
-  
-  const inputClass = "hover:bg-nba-blue hover:text-white mt-1 w-full p-3 border rounded-md text-lg ";
+
+  const inputClass =
+    "hover:bg-nba-blue hover:text-white mt-1 w-full p-3 border rounded-md text-lg ";
   const labelClass = "block text-nba-gray text-lg font-medium mb-2";
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -48,7 +48,6 @@ const NewPlayer: React.FC = () => {
               height: cropHeight,
             });
           } else {
-            // Obraz jest węższy lub ma takie same proporcje jak docelowy wymiar
             setCrop({
               unit: "%",
               x: 0,
@@ -65,10 +64,12 @@ const NewPlayer: React.FC = () => {
 
   const handleImageCrop = (crop: Crop) => {
     setCrop(crop);
+    fillCanvas(crop);
   };
 
   useEffect(() => {
-    axios.post("http://localhost:3000/getAllTeams")
+    axios
+      .post("http://localhost:3000/getAllTeams")
       .then((response) => {
         setTeams(response.data);
       })
@@ -76,6 +77,44 @@ const NewPlayer: React.FC = () => {
         console.log(err);
       });
   }, []);
+
+  const fillCanvas = (crop: Crop) => {
+    const canvas = document.getElementById("croppedImage") as HTMLCanvasElement;
+    const ctx = canvas.getContext("2d");
+    if (!ctx || !imagePreview) return;
+
+    const img = new Image();
+    img.src = imagePreview;
+
+    img.onload = () => {
+        const scale = img.height / 155;
+        const newWidth = img.width / scale;
+        const newHeight = img.height / scale;
+
+        // Tworzenie tymczasowego płótna
+        const tempCanvas = document.createElement("canvas");
+        const tempCtx = tempCanvas.getContext("2d")!;
+        tempCanvas.width = newWidth;
+        tempCanvas.height = newHeight;
+
+        // Rysowanie obrazu na tymczasowym płótnie z przeskalowanymi wymiarami
+        tempCtx.drawImage(img, 0, 0, newWidth, newHeight);
+
+        canvas.width = 115;
+        canvas.height = 155;
+
+        // Teraz używamy tymczasowego płótna jako źródła do rysowania na docelowym płótnie
+        ctx.drawImage(tempCanvas, crop.x, crop.y, 115, 155, 0, 0, 115, 155);
+
+        const base64Image = canvas.toDataURL("image/jpeg");
+        console.log(base64Image)
+        const inputElement = document.getElementById("base64Image") as HTMLInputElement;
+        if (inputElement) {
+            inputElement.value = base64Image;
+        }
+
+    };
+};
 
   return (
     <div className="bg-dark-primary h-screen w-full flex justify-center m-auto">
@@ -171,11 +210,17 @@ const NewPlayer: React.FC = () => {
             <ReactCrop
               crop={crop}
               onChange={handleImageCrop}
-              aspect = {115/155 as number}
-              locked = {true}
-            ><img src={imagePreview} style={{height: '155px'}}/></ReactCrop>
-            
+              aspect={(115 / 155) as number}
+              locked={true}
+            >
+              <img src={imagePreview} style={{ height: "155px" }} />
+            </ReactCrop>
           )}
+          <canvas
+            id="croppedImage"
+            style={{ display:"none", width: "115px", height: "155px" }}
+          ></canvas>
+          <input type="hidden" id="base64Image" name="base64Image"/>
 
           <button className="mt-4 w-full bg-nba-red hover:text-nba-gray text-white p-3 rounded text-lg transition duration-300">
             Add New Player
