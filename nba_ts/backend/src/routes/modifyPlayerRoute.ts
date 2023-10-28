@@ -1,24 +1,26 @@
 import express, { Request, Response } from 'express';
 import { getPlayer } from '../services/getPlayer';
-import { getTeams } from '../services/getTeams';
+import { modifyPlayer } from '../services/modifyPlayer';
+import { IPlayer } from '../../interfaces/IPlayer';
 
 const ModifyPlayerRouter = express.Router();
 
 ModifyPlayerRouter.post('/:id', async (req: Request, res: Response) => {
     try {
-        console.log('hej tu post')
-       const id = parseInt(req.body.id);
-       console.log(id);
-       const player = await getPlayer(id);
+        const id = parseInt(req.params.id);
+        let player: IPlayer = req.body;
         console.log(player);
-        const teams = await getTeams();
-        console.log(teams);
+        player.team_id = parseInt(player.team_id.toString());
+        if (!player.salary) {
+            player.salary = 0;
+        }
+        await modifyPlayer(id, player);
 
     } catch (e) {
         console.log(e);
         res.status(500).send('Something broke!');
     } finally {
-        res.redirect('/');
+        res.redirect('http://localhost:5173/');
     }
 });
 

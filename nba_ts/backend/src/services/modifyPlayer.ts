@@ -3,16 +3,13 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export const modifyPlayer = async (oldPlayer: IPlayer, newPlayer: IPlayer) => {
+export const modifyPlayer = async (id: number, newPlayer: IPlayer) => {
     console.log(newPlayer);
-    if (!newPlayer.salary) {
-        newPlayer.salary = oldPlayer.salary;
-    }
 
     try{
         const modifiedPlayer = await prisma.players.update({
             where: {
-                id: oldPlayer.id
+                id: id
             },
             data: newPlayer
         });
