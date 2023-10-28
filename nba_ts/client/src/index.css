@@ -16,3 +16,12 @@ body{
     margin: 0;
     padding: 0;
 }
+
+.ReactCrop__crop-selection {
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 2px solid #fff;
+  }
+
+  .ReactCrop__image-copy {
+    filter: brightness(50%);
+  }
