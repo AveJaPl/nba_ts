@@ -5,8 +5,7 @@ import upload from "../../multer_config";
 import fs from "fs";
 const AddPlayerRouter = express.Router();
 
-AddPlayerRouter.post(
-  "/",
+AddPlayerRouter.post("/",
   upload.single("playerImage"),
   async (req: Request, res: Response) => {
     try {
@@ -14,7 +13,7 @@ AddPlayerRouter.post(
       console.log(canvasImage);
       delete req.body.base64Image;
 
-      let player: IPlayer = req.body;
+      let player = req.body;
       player.team_id = parseInt(player.team_id.toString());
       if (!player.salary) {
         player.salary = 0;
@@ -45,7 +44,7 @@ AddPlayerRouter.post(
         player.imagePath = imagePathFront;
       }
 
-      await addPlayer(player);
+      await addPlayer(player as IPlayer);
     } catch (e) {
       console.log(e);
       res.status(500).send("Something broke!");

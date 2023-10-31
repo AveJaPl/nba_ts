@@ -1,6 +1,5 @@
 import express from 'express';
 import cors from 'cors';
-import bodyParser from 'body-parser';
 import AddPlayerRouter from './routes/addPlayerRoute';
 import ModifyPlayerRouter from './routes/modifyPlayerRoute';
 import DeletePlayerRouter from './routes/deletePlayerRoute';
@@ -11,7 +10,7 @@ const app = express();
 app.use(cors())
 const port = 3000;
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 
 app.set('json spaces', 2);
 

@@ -1,5 +1,4 @@
 import express, { Request, Response } from 'express';
-import { getPlayer } from '../services/getPlayer';
 import { modifyPlayer } from '../services/modifyPlayer';
 import { IPlayer } from '../../interfaces/IPlayer';
 
@@ -9,7 +8,6 @@ ModifyPlayerRouter.post('/:id', async (req: Request, res: Response) => {
     try {
         const id = parseInt(req.params.id);
         let player: IPlayer = req.body;
-        console.log(player);
         player.team_id = parseInt(player.team_id.toString());
         if (!player.salary) {
             player.salary = 0;
