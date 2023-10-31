@@ -10,6 +10,7 @@ export const getPlayers = async () => {
                 name: true,
                 surname: true,
                 salary: true,
+                position: true,
                 nationality: true,
                 imagePath: true,
                 team: {

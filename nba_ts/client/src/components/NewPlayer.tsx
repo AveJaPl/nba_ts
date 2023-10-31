@@ -6,6 +6,7 @@ import "react-image-crop/dist/ReactCrop.css";
 
 const NewPlayer: React.FC = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [originalImage, setOriginalImage] = useState<string | null>(null);
 
   const [crop, setCrop] = useState<Crop>({
     unit: "%",
@@ -26,6 +27,7 @@ const NewPlayer: React.FC = () => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
+        setOriginalImage(reader.result as string);
         setImagePreview(reader.result as string);
 
         const img = new Image();
@@ -81,33 +83,37 @@ const NewPlayer: React.FC = () => {
   const fillCanvas = (crop: Crop) => {
     const canvas = document.getElementById("croppedImage") as HTMLCanvasElement;
     const ctx = canvas.getContext("2d");
-    if (!ctx || !imagePreview) return;
+    if (!ctx || !originalImage) return;
 
     const img = new Image();
-    img.src = imagePreview;
+    img.src = originalImage;
 
     img.onload = () => {
         const scale = img.height / 155;
-        const newWidth = img.width / scale;
-        const newHeight = img.height / scale;
+        console.log(scale);
+        const cropWidthScaled = crop.width * scale;
+        const cropHeightScaled = crop.height * scale;
+        const cropXScaled = crop.x * scale;
+        const cropYScaled = crop.y * scale;
 
+        console.log("Nowa szerokość: " + cropWidthScaled + ", nowa wysokość: " + cropHeightScaled + ", nowy X: " + cropXScaled + ", nowy Y: " + cropYScaled);
         // Tworzenie tymczasowego płótna
         const tempCanvas = document.createElement("canvas");
         const tempCtx = tempCanvas.getContext("2d")!;
-        tempCanvas.width = newWidth;
-        tempCanvas.height = newHeight;
+        tempCanvas.width = img.width;
+        tempCanvas.height = img.height;
 
         // Rysowanie obrazu na tymczasowym płótnie z przeskalowanymi wymiarami
-        tempCtx.drawImage(img, 0, 0, newWidth, newHeight);
-
+        tempCtx.drawImage(img, 0, 0);
+        
         canvas.width = 115;
         canvas.height = 155;
 
         // Teraz używamy tymczasowego płótna jako źródła do rysowania na docelowym płótnie
-        ctx.drawImage(tempCanvas, crop.x, crop.y, 115, 155, 0, 0, 115, 155);
+        ctx.drawImage(tempCanvas, cropXScaled, cropYScaled, cropWidthScaled, cropHeightScaled, 0, 0, canvas.width, canvas.height);
 
-        const base64Image = canvas.toDataURL("image/jpeg");
-        console.log(base64Image)
+
+        const base64Image = canvas.toDataURL("image/jpeg", 1.0);
         const inputElement = document.getElementById("base64Image") as HTMLInputElement;
         if (inputElement) {
             inputElement.value = base64Image;
@@ -218,7 +224,7 @@ const NewPlayer: React.FC = () => {
           )}
           <canvas
             id="croppedImage"
-            style={{ display:"none", width: "115px", height: "155px" }}
+            className="hidden"
           ></canvas>
           <input type="hidden" id="base64Image" name="base64Image"/>
 
